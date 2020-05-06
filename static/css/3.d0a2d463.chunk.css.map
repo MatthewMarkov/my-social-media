@@ -1,0 +1,1 @@
+{"version":3,"sources":["Users.module.css"],"names":[],"mappings":"AAAA,wBACI,WAAY,CACZ,YACJ,CACA,qBACI,eACJ","file":"3.d0a2d463.chunk.css","sourcesContent":[".userPhoto {\r\n    width: 100px;\r\n    height: 100px;\r\n}\r\n.navBar {\r\n    font-weight: bold;\r\n}\r\n"]}
