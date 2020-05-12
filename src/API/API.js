@@ -26,12 +26,16 @@ export const authAPI = {
   authMe() {
     return instance.get('auth/me');
   },
-  login(email, password, rememberMe) {
-    return instance.post('auth/login', { email, password, rememberMe });
+  login(email, password, rememberMe, captcha = null) {
+    return instance.post('auth/login', { email, password, rememberMe, captcha });
   },
   logout() {
     return instance.delete('auth/login');
   },
+  getCaptcha() {
+    return instance.get('security/get-captcha-url');
+  },
+
 };
 
 
@@ -45,7 +49,16 @@ export const profileAPI = {
   updateStatus(status) {
     return instance.put('profile/status', { status });
   },
+  updateUserProfileInformation(userInfo) {
+    return instance.put('profile', userInfo);
+  },
+  savePhoto(photo) {
+    const formData = new FormData();
+    formData.append('image', photo);
+    return instance.put('profile/photo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
 };
-
-
-

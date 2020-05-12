@@ -1,0 +1,45 @@
+.gridContainer {
+    display: grid;
+    grid-template-areas: "photo info" "status info";
+    justify-content: left;
+    padding: 15px;
+    .userPhoto {
+        grid-area: photo;
+        width: 200px;
+        height: 200px;
+        border: 2px solid #555;
+        .btn {
+            background-color: white;
+            color: black;
+            border: 2px solid #e7e7e7;
+            &:hover {
+                background-color: #e7e7e7;
+            }
+        }
+        button {
+            border: none;
+            color: white;
+            padding: 5px 47px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+    }
+    .status {
+        grid-area: status;
+    }
+    .userInfo {
+        grid-area: info;
+        padding-left: 50px;
+    }
+}
+img {
+    width: 100%;
+}
+.userName {
+    font-size: 30px;
+}

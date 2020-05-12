@@ -62,7 +62,7 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         followingInProgress: action.isFetching
           ? [...state.followingInProgress, action.userID]
-          : state.followingInProgress.filter((id) => id != action.userID),
+          : state.followingInProgress.filter((id) => id !== action.userID),
       };
 
     default:
@@ -78,11 +78,18 @@ export const setUsers = (users) => ({ type: SET_USERS, users });
 
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
 
-export const setTotalUsersCount = (totalCount) => ({ type: SET_TOTAL_USERS_COUNT, count: totalCount });
+export const setTotalUsersCount = (totalCount) => ({
+  type: SET_TOTAL_USERS_COUNT,
+  count: totalCount,
+});
 
 export const isToggleFetching = (isFetching) => ({ type: IS_TOGGLE_FETCHING, isFetching });
 
-export const toggleFollowingProgress = (isFetching, userID) => ({ type: TOGGLE_IS_FOLLOWING_PROGRESS, isFetching, userID });
+export const toggleFollowingProgress = (isFetching, userID) => ({
+  type: TOGGLE_IS_FOLLOWING_PROGRESS,
+  isFetching,
+  userID,
+});
 
 export const getUsers = (currentPage, pageSize) => async (dispatch) => {
   dispatch(isToggleFetching(true));
@@ -93,11 +100,15 @@ export const getUsers = (currentPage, pageSize) => async (dispatch) => {
 };
 
 export const changePage = (currentPage, pageSize) => async (dispatch) => {
-  dispatch(setCurrentPage(currentPage));
-  dispatch(isToggleFetching(true));
-  const data = await usersAPI.getUsers(currentPage, pageSize);
-  dispatch(isToggleFetching(false));
-  dispatch(setUsers(data.items));
+  try {
+    dispatch(setCurrentPage(currentPage));
+    dispatch(isToggleFetching(true));
+    const data = await usersAPI.getUsers(currentPage, pageSize);
+    dispatch(isToggleFetching(false));
+    dispatch(setUsers(data.items));
+  } catch (e) {
+    alert(e);
+  }
 };
 
 export const follow = (userID) => async (dispatch) => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const ProfileStatus = (props) => {
+debugger
   const [ActiveMode, setActiveMode] = useState(false);
   const [status, setStatus] = useState(props.status);
 
@@ -19,7 +20,7 @@ const ProfileStatus = (props) => {
       <span><strong>status: </strong></span>
       {ActiveMode
         ? <input onChange={onStatusChange} autoFocus onBlur={offActiveMode} value={status} />
-        : <span onDoubleClick={onActiveMode}>{status}</span>}
+        : <span onDoubleClick={onActiveMode}>{props.status || 'user status'}</span>}
     </div>
 
   );

@@ -1,8 +1,10 @@
+import { stopSubmit } from 'redux-form';
 import { profileAPI } from '../API/API';
 
 const ADD_POST = 'ADD-POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
 const GET_STATUS = 'SET_STATUS';
+const UPDATE_USER_PHOTO = 'UPDATE_USER_PHOTO';
 
 const initialState = {
   posts: [
@@ -34,6 +36,11 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         status: action.status,
       };
+    case UPDATE_USER_PHOTO:
+      return {
+        ...state,
+        profile: { ...state.profile, photos: action.photos },
+      };
     default:
       return state;
   }
@@ -44,6 +51,9 @@ export const addPost = (post) => ({ type: ADD_POST, post });
 export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
 
 export const setStatus = (status) => ({ type: GET_STATUS, status });
+
+export const updateUserPhoto = (photos) => ({ type: UPDATE_USER_PHOTO, photos });
+
 
 export const getProfile = (userID) => (dispatch) => {
   profileAPI.getUserProfile(userID).then((response) => {
@@ -60,6 +70,24 @@ export const updateStatus = (status) => (dispatch) => {
   profileAPI.updateStatus(status).then((response) => {
     if (response.data.resultCode === 0) {
       dispatch(setStatus(status));
+    }
+  });
+};
+export const updateUserInformation = (userData) => async (dispatch, getState) => {
+  profileAPI.updateUserProfileInformation(userData).then((response) => {
+    const userID = getState().auth.id;
+    if (response.data.resultCode === 0) {
+      dispatch(getProfile(userID));
+    } else {
+      dispatch(stopSubmit('contacts', { _error: response.data.messages[0] }));
+    }
+  });
+};
+
+export const saveUserPhoto = (photo) => (dispatch) => {
+  profileAPI.savePhoto(photo).then((response) => {
+    if (response.data.resultCode === 0) {
+      dispatch(updateUserPhoto(response.data.data.photos));
     }
   });
 };

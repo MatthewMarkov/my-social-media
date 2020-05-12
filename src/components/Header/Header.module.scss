@@ -1,0 +1,48 @@
+
+
+.header {
+    box-sizing: border-box;
+    grid-area: h;
+    background-color:
+            #4a76a8;
+    img {
+        width: 50px;
+        padding: 5px;
+    }
+    .box {
+        float: right;
+        width: 75px;
+        color: white;
+        font-weight: bold;
+    }
+    .link {
+        font-size: 25px;
+        color: white;
+        padding-top: 18px;
+        text-decoration: none;
+        &:hover {
+            color: #212121;
+        }
+    }
+    .userImg {
+        border-radius: 50%;
+    }
+    button {
+        background-color: white; /* Green */
+        border: none;
+        color: #303f9f ;
+        padding: 5px 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        transition-duration: 0.2s;
+        cursor: pointer;
+        &:hover {
+            background-color: #e4eaf0;
+        }
+
+
+
+    }
+}

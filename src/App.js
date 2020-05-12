@@ -12,7 +12,7 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/LoginPage/Login';
 import { initializeApp } from './redux/app-reducer';
 import Loader from './components/Loader/Loader';
-import {withSuspense} from "./HOC/HOC";
+import { withSuspense } from './HOC/HOC';
 
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 
@@ -34,7 +34,8 @@ class App extends React.Component {
         <div className="app-wrapper-content">
           <Route path="/dialogs" render={() => <DialogsContainer />} />
           <Route exact path="/" render={() => <ProfileContainer />} />
-          <Route path="/profile/:userID?" render={() => <ProfileContainer />} />
+          <Route exact path="/profile/:userID" render={() => <ProfileContainer />} />
+          <Route exact path="/profile" render={() => <ProfileContainer />} />
           <Route path="/news" component={News} />
           <Route path="/users" render={withSuspense(UsersContainer)} />
           <Route path="/music" component={Music} />
