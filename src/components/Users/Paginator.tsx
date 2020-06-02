@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
+import cn from 'classnames';
 import Loader from '../Loader/Loader';
 import s from './Users.module.css';
 
-const Paginator = (props) => {
-  const pageCount = Math.ceil(props.totalUsersCount / props.pageSize);
-  const pages = [];
+type PropsType = {
+  totalUsersCount: number
+  pageSize: number
+  currentPage: number
+  onPageChanged: (pageNumber: number) => void
+  isFetching: boolean
+}
+
+const Paginator: FC<PropsType> = ({
+  totalUsersCount, pageSize, currentPage, onPageChanged, isFetching,
+}) => {
+  const pageCount = Math.ceil(totalUsersCount / pageSize);
+  const pages: Array<number> = [];
   for (let i = 1; i <= pageCount; i++) {
     pages.push(i);
   }
@@ -15,7 +26,7 @@ const Paginator = (props) => {
   const rightPortionNumber = portionNumber * portionSize;
   return (
     <div>
-      {props.isFetching ? <Loader /> : null}
+      {isFetching ? <Loader /> : null}
       <div>
         {portionNumber > 1
           && <button onClick={() => { setPortionNumber(portionNumber - 1); }}>Prev</button>}
@@ -23,15 +34,16 @@ const Paginator = (props) => {
           .filter((p) => p >= leftPortionNumber && p <= rightPortionNumber)
           .map((p) => (
             <span
-              className={props.currentPage === p && s.navBar}
+              key={p}
+              className={cn(currentPage === p && s.navBar)}
               onClick={() => {
-                props.onPageChanged(p);
+                onPageChanged(p);
               }}
             >
               {p}
             </span>
           ))}
-          {portionCount > portionNumber
+        {portionCount > portionNumber
           && <button onClick={() => { setPortionNumber(portionNumber + 1); }}>Next</button>}
       </div>
     </div>

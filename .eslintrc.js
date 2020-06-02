@@ -14,7 +14,7 @@ module.exports = {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
- //   "parser": "@typescript-eslint/parser",
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -25,8 +25,8 @@ module.exports = {
     "plugins": [
         "react-hooks",
         "prettier",
-        "promise"
-      //  "@typescript-eslint"
+        "promise",
+        "@typescript-eslint"
     ],
     "rules": {
         "react/prop-types" : "off",

@@ -3,9 +3,6 @@ import './App.css';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Navbar from './components/Navbar/Navbar';
-import News from './components/News/News';
-import Music from './components/Music/Music';
-import Settings from './components/Settings/Settings';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
@@ -13,6 +10,7 @@ import Login from './components/LoginPage/Login';
 import { initializeApp } from './redux/app-reducer';
 import Loader from './components/Loader/Loader';
 import { withSuspense } from './HOC/HOC';
+import Dialog from "./components/Dialogs/Dialog";
 
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 
@@ -36,10 +34,8 @@ class App extends React.Component {
           <Route exact path="/" render={() => <ProfileContainer />} />
           <Route exact path="/profile/:userID" render={() => <ProfileContainer />} />
           <Route exact path="/profile" render={() => <ProfileContainer />} />
-          <Route path="/news" component={News} />
+          <Route exact path="/dialog/:id" render={() => <Dialog />} />
           <Route path="/users" render={withSuspense(UsersContainer)} />
-          <Route path="/music" component={Music} />
-          <Route path="/settings" component={Settings} />
           <Route path="/login" component={Login} />
         </div>
       </div>

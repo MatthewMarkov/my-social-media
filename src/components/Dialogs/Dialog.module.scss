@@ -1,0 +1,12 @@
+.messages {
+    display: grid;
+    grid-template-columns: 1fr 10fr;
+    padding: 5px;
+    .senderName {
+        text-decoration: none;
+    }
+}
+
+.notViewed {
+    background-color: gray;
+}

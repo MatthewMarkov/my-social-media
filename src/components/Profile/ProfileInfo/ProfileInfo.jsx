@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import cn from 'classnames';
 import s from './ProfileInfo.module.scss';
@@ -7,14 +6,22 @@ import Loader from '../../Loader/Loader';
 import ProfileStatus from './ProfileStatus';
 import { updateUserInformation } from '../../../redux/profile-reducer';
 import userPhoto from '../../../assets/user.png';
+import ProfileData from './ProfileData';
+import { MessageReduxForm, ProfileDataFormContainer } from './ProfileDataForms';
 
 
 const ProfileInfo = (props) => {
   const [editMode, changeEditMode] = useState(false);
   const [input, showInput] = useState(false);
-  const onSubmit = (formData) => {
+  const [messageInput, showMessageInput] = useState(false);
+  const { userID } = props.match.params;
+  const onSubmitInfo = (formData) => {
     props.updateUserInformation(formData);
     changeEditMode(false);
+  };
+  const onSubmitMessage = (formData) => {
+    props.sendMessage(userID, formData);
+    showMessageInput(false);
   };
   const onChangeMode = () => {
     changeEditMode(true);
@@ -35,8 +42,10 @@ const ProfileInfo = (props) => {
     <div className={cn(s.gridContainer)}>
       <div className={cn(s.userPhoto)}>
         <img alt="User" src={props.profile.photos.large || userPhoto} />
-        { props.isOwner && !input && <div><button className={s.btn} type="button" onClick={showInput}>change photo</button></div>}
+        { props.isOwner && !input && props.isAuth && <div><button className={s.btn} type="button" onClick={showInput}>change photo</button></div>}
         { props.isOwner && input && <div><input type="file" onChange={onChangePhoto} /></div>}
+        {!props.isOwner && !messageInput && props.isAuth && <div><button className={cn(s.btn2, s.btn)} onClick={showMessageInput}>Send message</button></div>}
+        {!props.isOwner && messageInput && <MessageReduxForm onSubmit={onSubmitMessage} />}
       </div>
       <div className={s.status}>
         <ProfileStatus {...props} status={props.status} updateStatus={props.updateStatus} />
@@ -45,7 +54,7 @@ const ProfileInfo = (props) => {
         {editMode ? (
           <ProfileDataFormContainer
             initialValues={props.profile}
-            onSubmit={onSubmit}
+            onSubmit={onSubmitInfo}
             profile={props.profile}
             changeEditMode={offChangeMode}
           />
@@ -55,103 +64,5 @@ const ProfileInfo = (props) => {
     </div>
   );
 };
-
-const Contact = ({ contactKey, contactValue }) => (
-  <div>
-    <b>{contactKey}</b>
-    {' '}
-    :
-    {' '}
-    {contactValue}
-  </div>
-);
-
-const ProfileData = ({ profile, changeEditMode, ...props }) => {
-  const { userID } = props.match.params;
-  const { authID } = props;
-  return (
-    <div className={s.userInformation}>
-      <div className={s.userName}>
-        {profile.fullName}
-      </div>
-      <div>
-        <strong>About me: </strong>
-        {profile.aboutMe}
-      </div>
-      <div>
-        <strong>Looking for a job: </strong>
-        {profile.lookingForAJob ? 'yes' : 'no'}
-        {profile.lookingForAJob ? (
-          <div>
-            <strong>work status:</strong>
-            {' '}
-            {profile.lookingForAJobDescription}
-            {' '}
-          </div>
-        ) : null}
-      </div>
-      <div>
-        <b>Contacts</b>
-        {' '}
-        :
-        {Object.keys(profile.contacts)
-          .map((key) => (
-            <Contact
-              contactKey={key}
-              contactValue={profile.contacts[key]}
-            />
-          ))}
-        {authID && !userID && <button onClick={changeEditMode}>Edit</button>}
-      </div>
-    </div>
-  );
-};
-
-const ProfileDataForm = ({
-  profile, changeEditMode, error, ...props
-}) => (
-  <form onSubmit={props.handleSubmit}>
-    <div className={s.userInformation}>
-
-      <div>
-        <strong> Name:</strong>
-        {' '}
-        <Field placeholder="your name" name="fullName" component="input" type="text" />
-      </div>
-      <div>
-        <strong>About me: </strong>
-        <Field placeholder="Describe yourself" name="aboutMe" component="textarea" type="text" />
-      </div>
-      <div>
-        <strong>Looking for a job: </strong>
-        <Field placeholder="yes/no" name="lookingForAJob" component="input" type="text" />
-        <div>
-          <strong>work status:</strong>
-          <Field placeholder="your current work status" name="lookingForAJobDescription" component="input" type="text" />
-        </div>
-      </div>
-      <div>
-        <b>Contacts</b>
-        {' '}
-        :
-        {Object.keys(profile.contacts)
-          .map((key) => (
-            <div key={key}>
-              {' '}
-              {key}
-              {' '}
-              :
-              {' '}
-              <Field name={`contacts.${key}`} component="input" placeholder={key} />
-            </div>
-          ))}
-      </div>
-    </div>
-    <button type="submit">Save</button>
-    {error && <div>{error}</div>}
-  </form>
-);
-
-const ProfileDataFormContainer = reduxForm({ form: 'contacts' })(ProfileDataForm);
 
 export default connect(null, { updateUserInformation })(ProfileInfo);

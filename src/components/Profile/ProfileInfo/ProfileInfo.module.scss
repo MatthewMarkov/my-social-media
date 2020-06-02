@@ -3,6 +3,8 @@
     grid-template-areas: "photo info" "status info";
     justify-content: left;
     padding: 15px;
+
+
     .userPhoto {
         grid-area: photo;
         width: 200px;
@@ -31,6 +33,7 @@
     }
     .status {
         grid-area: status;
+        padding-top: 100px;
     }
     .userInfo {
         grid-area: info;
@@ -42,4 +45,32 @@ img {
 }
 .userName {
     font-size: 30px;
+}
+.error {
+    border: 2px solid red;
+    color: red
+}
+.statusFont {
+    font-size: 20px;
+    font-weight: normal;
+}
+.btn {
+    background-color: white;
+    color: black;
+    border: 2px solid #e7e7e7;
+    &:hover {
+        background-color: #e7e7e7;
+    }
+}
+.btn2 {
+    border: none;
+    color: white;
+    padding: 5px 47px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }

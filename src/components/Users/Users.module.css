@@ -5,3 +5,7 @@
 .navBar {
     font-weight: bold;
 }
+.userItem {
+    padding: 10px;
+    border-bottom: 1px solid black;
+}

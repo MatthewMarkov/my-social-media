@@ -1,0 +1,26 @@
+.dialog {
+    display: grid;
+    grid-template-areas: "photo name" "photo lastAcivity" "photo isNewMessages";
+    grid-template-columns: 1fr 5fr;
+    justify-content: start;
+    padding: 10px;
+    border-bottom: 1px solid green;
+    .userPhoto {
+        grid-area: photo;
+        width: 100px;
+        height: 100px;
+    }
+    .userName {
+        grid-area: name;
+        font-size: 30px;
+        text-decoration: none;
+        justify-content: start;
+    }
+    .newMessage {
+        grid-area: isNewMessages;
+        font-weight: bold;
+    }
+    .lastActivity {
+        grid-area: lastAcivity;
+    }
+}

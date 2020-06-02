@@ -1,16 +1,31 @@
 import React from 'react';
-import {addPost} from "../../../redux/profile-reducer";
-import {connect} from "react-redux";
-import MyPosts from "./MyPosts";
+import { connect } from 'react-redux';
+import Post from './Post/Post';
+import s from './MyPosts.module.scss';
+import PostFormRedux from './AddPostForm';
 
-let mapStateToProps = (state) => {
-    return {
-        posts: state.profilePage.posts,
-        newPostText: state.profilePage.newPostText
-    }
+const MyPosts = (props) => {
+  const addUserPost = (value) => {
+    props.ActionCreators.addPost(value.post);
+  };
+  const postsElements = props.posts.map((p) => <Post message={p.message} like={p.likesCount} />);
+  return (
+    <div className={s.postBlock}>
+      {props.isOwner
+        ? <div className={s.myPosts}>My posts</div>
+        : <div className={s.myPosts}>User posts</div>}
+      {props.isOwner && <PostFormRedux onSubmit={addUserPost} />}
+      <div className={s.posts}>
+        {postsElements}
+      </div>
+    </div>
+  );
 };
 
+const mapStateToProps = (state) => ({
+  posts: state.profilePage.posts,
+  newPostText: state.profilePage.newPostText,
+  ActionCreators: state.profilePage.ActionCreators,
+});
 
-const myPostsContainer = connect (mapStateToProps, {addPost}) (MyPosts);
-
-export default myPostsContainer;
+export default connect(mapStateToProps, null)(MyPosts);
